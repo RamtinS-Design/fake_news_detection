@@ -38,6 +38,7 @@ The cleaned result is written out to `cleaned_fake_news.csv`, and `X` (content) 
 ## How to Run it
 
 Needs `Fake.csv` and `True.csv` (from the Kaggle Fake and Real News Dataset) in the working directory.
+https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv
 
 ```
 pip install pandas numpy nltk tensorflow
