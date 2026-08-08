@@ -7,10 +7,10 @@ Text classification project to flag news articles as fake or real, based on the 
 - [x] Load and inspect the data
 - [x] Merge and label the two source files
 - [x] Clean and normalize article text
-- [ ] Tokenize / vectorize for modeling
-- [ ] Train/test split
-- [ ] Train a classifier
-- [ ] Evaluate
+- [x] Tokenize / vectorize for modeling
+- [x] Train/test split
+- [x] Train a classifier
+- [x] Evaluate
 
 ## Dataset
 
@@ -35,22 +35,35 @@ Fake articles are labeled `0` and real articles `1`, then the two frames are con
 
 The cleaned result is written out to `cleaned_fake_news.csv`, and `X` (content) / `y` (label) are split out for modeling.
 
+## Modeling
+
+The data is split 80/20 into train and test sets before any tokenizer fitting, so nothing from the test set leaks into the vocabulary.
+The classifier is a Keras `Sequential` model:
+
+- an embedding layer
+- a bidirectional LSTM
+- dropout and a small dense layer before the final sigmoid output
+
+## Evaluation
+
+The notebook reports accuracy, precision, recall, and F1 on the held-out test set, along with a full classification report and a confusion matrix heatmap. 
+
 ## How to Run it
 
 Needs `Fake.csv` and `True.csv` (from the Kaggle Fake and Real News Dataset) in the working directory.
 https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset?select=Fake.csv
 
 ```
-pip install pandas numpy nltk tensorflow
+pip install pandas numpy nltk tensorflow scikit-learn matplotlib seaborn
 ```
 
 ## What's next
 
-The notebook currently ends right after importing `Tokenizer` and `pad_sequences` from `tensorflow.keras`, which points toward a sequence-based model (e.g. an embedding layer feeding an LSTM) rather than a classic bag-of-words classifier. Remaining work:
+- Compare against a simpler baseline (e.g. TF-IDF + logistic regression) to see whether the LSTM is actually earning its complexity
+- Tune hyperparameters like embedding size, LSTM units, and dropout rate
+- Try pretrained embeddings (GloVe or similar) instead of training the embedding layer from scratch
+- Package the trained model behind a small script or API for inference on new articles
 
-- Drop the duplicate rows found during inspection
-- Fit the tokenizer on the cleaned text and pad sequences to a fixed length
-- Split into train/test sets
-- Build and train the model
-- Evaluate with accuracy, precision, recall, F1, and a confusion matrix — same as would be expected for any binary classifier
+## Author
 
+Made by (RamtinS-Design)
